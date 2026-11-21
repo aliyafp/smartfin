@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+# Project rules
+- Money is stored and computed as integer paise; all totals go through `src/lib/finance/engine.ts` (periods) and `src/lib/finance/monthly.ts` (month comparisons) so every screen uses the same income/expense/refund/transfer rules; only confirmed records count (`isCountable`), and an in-progress month is also compared day-for-day so partial months aren't judged against full ones.
+- Statement parsing in `src/lib/import/` is pure (no I/O) and covered by tests; the CSV is read in the browser and only confirmed rows are sent to the `import_statement` database function, which saves a batch atomically and is idempotent per batch id.
+- Duplicate and possible-transfer rows are flagged for the user and never deleted or dropped automatically; invalid rows are always reported and counted as rejected.
+- Scan & Extract: image reading runs only in the server function (`src/lib/extract/ocr.server.ts`, Lovable AI gateway, strict JSON schema, no data retention); classification, interpretation, validation, categorisation and duplicate checks in `src/lib/extract/` are pure and tested, and never alter extracted values to make totals match.
+- Scanned documents never become transactions without the review screen; saving goes through the atomic, idempotent `save_extraction` database function, and receipt items are stored as details of one transaction, never as separate payments.
+- Receipt images live only in the private `documents` bucket under the user's folder, are shown via short-lived signed links, require recorded consent before upload, and are deleted after save/discard unless the user chooses to keep them.

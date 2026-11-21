@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1795253506906,
+      "tag": "0000_smartfin_core_and_statement_imports",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795253553358,
+      "tag": "0001_scan_and_extract",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795253634163,
+      "tag": "0002_connect_your_apps",
+      "breakpoints": true
+    }
+  ]
+}
