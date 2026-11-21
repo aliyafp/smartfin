@@ -42,9 +42,9 @@ All test data was synthetic (records named "Audit …", test users `agent-test+�
 | Recurring Payments | PARTIAL | Detection logic unit-tested; on screen shows correct empty state ("No regular payments found yet"). There is no separate recurring-payments screen |
 | Profile and Settings | PASS | Display name saved and still there after reload; sources screen; demo-data and privacy links present |
 | Navigation | PASS | Bottom tab bar on all signed-in pages; every page loads with no browser errors |
-| Budget Management | **NOT IMPLEMENTED** | `/budgets` is a placeholder ("Budgets are coming in a later phase") |
-| Savings Goals | **NOT IMPLEMENTED** | No screen, table or logic exists |
-| Manual Savings Contributions | **NOT IMPLEMENTED** | No screen, table or logic exists |
+| Budget Management | **PASS** (added 21 Nov, see §11) | Monthly limit per category, month switcher, add/edit/remove, 80% "close to limit" and "over budget" states, spending without a budget |
+| Savings Goals | **PASS** (added 21 Nov, see §11) | Create/edit/delete goals with target and optional date, progress, amount needed per month, reached / past-date states |
+| Manual Savings Contributions | **PASS** (added 21 Nov, see §11) | Add money / withdraw, edit, delete, monthly contribution history, filter by goal |
 | Connect Your Apps | **NOT REACHABLE** | Database tables, processing engine and review components exist and pass 39 unit tests, but no screen links to them — users cannot use it |
 
 ## 4. Financial accuracy (synthetic data)
@@ -65,7 +65,7 @@ Data: income ₹50,000; expenses ₹1,200 (Food) + ₹800 (Shopping); refund ₹
 | Duplicate detection | identical entry flagged & unticked, never deleted | ✓ | PASS |
 | Pending/failed handling | not counted in totals | covered by unit tests (`isCountable`, scan "Waiting list", Connect statuses); not triggered live | PASS (unit) |
 | Dashboard vs Analytics consistency | identical figures | identical | PASS |
-| Budget progress / savings goal progress / contribution history | — | modules don't exist | NOT TESTED |
+| Budget progress / savings goal progress / contribution history | Food ₹4,000 of ₹5,000 (80%, close to limit); Transport ₹900 of ₹500 (180%, ₹400 over); goal ₹10,000 added − ₹2,000 withdrawn = ₹8,000 of ₹30,000 (27%), ₹7,333.34/month for 3 months | same | PASS (see §11) |
 
 ## 5. Database and security
 
@@ -110,3 +110,27 @@ None needed. No build-blocking or behaviour bugs were found in the imported code
 **B. Ready for controlled demo.**
 
 Everything that exists works, calculates correctly and keeps each user's data private; build, types and tests pass. It is not classified "Ready to deploy" because four modules named in the audit scope — Budget Management, Savings Goals, Manual Savings Contributions and Connect Your Apps (no screen) — are missing or unreachable, and these were out of scope to build under the "no new features" rule.
+
+**Update 21 Nov (after §11):** Budget Management, Savings Goals and Manual Savings Contributions are now built and verified. The one module from the audit scope still not usable is **Connect Your Apps** (no screen); Recurring Payments remains detection-only inside the monthly report. Rating stays **B** until Connect Your Apps has a screen or is formally taken out of the launch scope — with either of those, SMARTFIN meets **A. Ready to deploy**.
+
+
+## 11. Addendum — Budgets, Savings Goals and Contributions (21 Nov 2026)
+
+Built at the owner's request after the audit. Design kept to SMARTFIN's navy + coral look; they live under the existing Budgets tab with a Budgets / Savings goals / Contributions switch.
+
+**Rules**
+- Budget = monthly limit per expense category. Spending = confirmed expenses − refunds in that category for the month; transfers never count. "Close to limit" from 80%, "Over budget" once spending exceeds the limit.
+- Savings contributions are tracked separately (owner's choice) — they never change income, spending, net cash flow or source balances.
+- A goal's saved amount = added − withdrawn and can't go below zero (checked in the form and again by the database).
+
+**Checks**
+| Check | Result |
+|---|---|
+| New unit tests (`src/lib/finance/plans.test.ts`) | PASS — 13 tests; full suite **140/140** |
+| Type checking / build | PASS |
+| Lint on new files | PASS (formatting clean; 4 fast-refresh warnings, same kind as existing) |
+| Browser flow, 390px mobile, signed-in test user | Set Food ₹5,000 and Transport ₹500 budgets (invalid amount rejected), created "Emergency fund" ₹30,000 goal, added ₹10,000, over-withdrawal of ₹15,000 blocked, withdrew ₹2,000, history shows Nov: +₹10,000 / −₹2,000 / net +₹8,000. No console errors |
+| Savings don't affect totals | Home still showed income ₹50,000, expenses ₹5,900, net +₹44,100 after contributions — PASS |
+| Database protection | Over-withdrawal via API rejected; contribution to a goal the user doesn't own rejected; negative budget rejected; writing another user's budget rejected; signed-out visitors see no rows — PASS |
+
+All synthetic test data was removed afterwards.

@@ -16,10 +16,13 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAnalyticsRouteImport } from './routes/_authenticated/analytics'
 import { Route as AuthenticatedBudgetsRouteImport } from './routes/_authenticated/budgets'
 import { Route as AuthenticatedCompareRouteImport } from './routes/_authenticated/compare'
+import { Route as AuthenticatedContributionsRouteImport } from './routes/_authenticated/contributions'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedImportRouteImport } from './routes/_authenticated/import'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSourcesRouteImport } from './routes/_authenticated/sources'
+import { Route as AuthenticatedGoalsIndexRouteImport } from './routes/_authenticated/goals.index'
+import { Route as AuthenticatedGoalsIdRouteImport } from './routes/_authenticated/goals.$id'
 import { Route as AuthenticatedScanIndexRouteImport } from './routes/_authenticated/scan.index'
 import { Route as AuthenticatedScanIdRouteImport } from './routes/_authenticated/scan.$id'
 import { Route as AuthenticatedTransactionsIndexRouteImport } from './routes/_authenticated/transactions.index'
@@ -60,6 +63,12 @@ const AuthenticatedCompareRoute = AuthenticatedCompareRouteImport.update({
   path: '/compare',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedContributionsRoute =
+  AuthenticatedContributionsRouteImport.update({
+    id: '/contributions',
+    path: '/contributions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -78,6 +87,16 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
 const AuthenticatedSourcesRoute = AuthenticatedSourcesRouteImport.update({
   id: '/sources',
   path: '/sources',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGoalsIndexRoute = AuthenticatedGoalsIndexRouteImport.update({
+  id: '/goals/',
+  path: '/goals/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGoalsIdRoute = AuthenticatedGoalsIdRouteImport.update({
+  id: '/goals/$id',
+  path: '/goals/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedScanIndexRoute = AuthenticatedScanIndexRouteImport.update({
@@ -116,13 +135,16 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AuthenticatedAnalyticsRoute
   '/budgets': typeof AuthenticatedBudgetsRoute
   '/compare': typeof AuthenticatedCompareRoute
+  '/contributions': typeof AuthenticatedContributionsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/import': typeof AuthenticatedImportRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/sources': typeof AuthenticatedSourcesRoute
+  '/goals/$id': typeof AuthenticatedGoalsIdRoute
   '/scan/$id': typeof AuthenticatedScanIdRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/transactions/new': typeof AuthenticatedTransactionsNewRoute
+  '/goals/': typeof AuthenticatedGoalsIndexRoute
   '/scan/': typeof AuthenticatedScanIndexRoute
   '/transactions/': typeof AuthenticatedTransactionsIndexRoute
 }
@@ -133,13 +155,16 @@ export interface FileRoutesByTo {
   '/analytics': typeof AuthenticatedAnalyticsRoute
   '/budgets': typeof AuthenticatedBudgetsRoute
   '/compare': typeof AuthenticatedCompareRoute
+  '/contributions': typeof AuthenticatedContributionsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/import': typeof AuthenticatedImportRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/sources': typeof AuthenticatedSourcesRoute
+  '/goals/$id': typeof AuthenticatedGoalsIdRoute
   '/scan/$id': typeof AuthenticatedScanIdRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/transactions/new': typeof AuthenticatedTransactionsNewRoute
+  '/goals': typeof AuthenticatedGoalsIndexRoute
   '/scan': typeof AuthenticatedScanIndexRoute
   '/transactions': typeof AuthenticatedTransactionsIndexRoute
 }
@@ -152,13 +177,16 @@ export interface FileRoutesById {
   '/_authenticated/analytics': typeof AuthenticatedAnalyticsRoute
   '/_authenticated/budgets': typeof AuthenticatedBudgetsRoute
   '/_authenticated/compare': typeof AuthenticatedCompareRoute
+  '/_authenticated/contributions': typeof AuthenticatedContributionsRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/import': typeof AuthenticatedImportRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/sources': typeof AuthenticatedSourcesRoute
+  '/_authenticated/goals/$id': typeof AuthenticatedGoalsIdRoute
   '/_authenticated/scan/$id': typeof AuthenticatedScanIdRoute
   '/_authenticated/transactions/$id': typeof AuthenticatedTransactionsIdRoute
   '/_authenticated/transactions/new': typeof AuthenticatedTransactionsNewRoute
+  '/_authenticated/goals/': typeof AuthenticatedGoalsIndexRoute
   '/_authenticated/scan/': typeof AuthenticatedScanIndexRoute
   '/_authenticated/transactions/': typeof AuthenticatedTransactionsIndexRoute
 }
@@ -171,13 +199,16 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/budgets'
     | '/compare'
+    | '/contributions'
     | '/home'
     | '/import'
     | '/profile'
     | '/sources'
+    | '/goals/$id'
     | '/scan/$id'
     | '/transactions/$id'
     | '/transactions/new'
+    | '/goals/'
     | '/scan/'
     | '/transactions/'
   fileRoutesByTo: FileRoutesByTo
@@ -188,13 +219,16 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/budgets'
     | '/compare'
+    | '/contributions'
     | '/home'
     | '/import'
     | '/profile'
     | '/sources'
+    | '/goals/$id'
     | '/scan/$id'
     | '/transactions/$id'
     | '/transactions/new'
+    | '/goals'
     | '/scan'
     | '/transactions'
   id:
@@ -206,13 +240,16 @@ export interface FileRouteTypes {
     | '/_authenticated/analytics'
     | '/_authenticated/budgets'
     | '/_authenticated/compare'
+    | '/_authenticated/contributions'
     | '/_authenticated/home'
     | '/_authenticated/import'
     | '/_authenticated/profile'
     | '/_authenticated/sources'
+    | '/_authenticated/goals/$id'
     | '/_authenticated/scan/$id'
     | '/_authenticated/transactions/$id'
     | '/_authenticated/transactions/new'
+    | '/_authenticated/goals/'
     | '/_authenticated/scan/'
     | '/_authenticated/transactions/'
   fileRoutesById: FileRoutesById
@@ -275,6 +312,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCompareRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/contributions': {
+      id: '/_authenticated/contributions'
+      path: '/contributions'
+      fullPath: '/contributions'
+      preLoaderRoute: typeof AuthenticatedContributionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/home': {
       id: '/_authenticated/home'
       path: '/home'
@@ -301,6 +345,20 @@ declare module '@tanstack/react-router' {
       path: '/sources'
       fullPath: '/sources'
       preLoaderRoute: typeof AuthenticatedSourcesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/goals/': {
+      id: '/_authenticated/goals/'
+      path: '/goals'
+      fullPath: '/goals/'
+      preLoaderRoute: typeof AuthenticatedGoalsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/goals/$id': {
+      id: '/_authenticated/goals/$id'
+      path: '/goals/$id'
+      fullPath: '/goals/$id'
+      preLoaderRoute: typeof AuthenticatedGoalsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/scan/': {
@@ -345,13 +403,16 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAnalyticsRoute: typeof AuthenticatedAnalyticsRoute
   AuthenticatedBudgetsRoute: typeof AuthenticatedBudgetsRoute
   AuthenticatedCompareRoute: typeof AuthenticatedCompareRoute
+  AuthenticatedContributionsRoute: typeof AuthenticatedContributionsRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedImportRoute: typeof AuthenticatedImportRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSourcesRoute: typeof AuthenticatedSourcesRoute
+  AuthenticatedGoalsIdRoute: typeof AuthenticatedGoalsIdRoute
   AuthenticatedScanIdRoute: typeof AuthenticatedScanIdRoute
   AuthenticatedTransactionsIdRoute: typeof AuthenticatedTransactionsIdRoute
   AuthenticatedTransactionsNewRoute: typeof AuthenticatedTransactionsNewRoute
+  AuthenticatedGoalsIndexRoute: typeof AuthenticatedGoalsIndexRoute
   AuthenticatedScanIndexRoute: typeof AuthenticatedScanIndexRoute
   AuthenticatedTransactionsIndexRoute: typeof AuthenticatedTransactionsIndexRoute
 }
@@ -360,13 +421,16 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAnalyticsRoute: AuthenticatedAnalyticsRoute,
   AuthenticatedBudgetsRoute: AuthenticatedBudgetsRoute,
   AuthenticatedCompareRoute: AuthenticatedCompareRoute,
+  AuthenticatedContributionsRoute: AuthenticatedContributionsRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedImportRoute: AuthenticatedImportRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSourcesRoute: AuthenticatedSourcesRoute,
+  AuthenticatedGoalsIdRoute: AuthenticatedGoalsIdRoute,
   AuthenticatedScanIdRoute: AuthenticatedScanIdRoute,
   AuthenticatedTransactionsIdRoute: AuthenticatedTransactionsIdRoute,
   AuthenticatedTransactionsNewRoute: AuthenticatedTransactionsNewRoute,
+  AuthenticatedGoalsIndexRoute: AuthenticatedGoalsIndexRoute,
   AuthenticatedScanIndexRoute: AuthenticatedScanIndexRoute,
   AuthenticatedTransactionsIndexRoute: AuthenticatedTransactionsIndexRoute,
 }

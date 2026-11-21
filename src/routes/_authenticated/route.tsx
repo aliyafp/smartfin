@@ -31,7 +31,8 @@ function AppLayout() {
       <nav aria-label="Primary" className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t border-border/70 bg-card/95 pb-safe shadow-nav backdrop-blur">
         <ul className="grid grid-cols-5">
           {TABS.map(({ to, label, icon: Icon }) => {
-            const active = pathname === to || pathname.startsWith(to + "/");
+            const paths: readonly string[] = to === "/budgets" ? ["/budgets", "/goals", "/contributions"] : [to];
+            const active = paths.some((p) => pathname === p || pathname.startsWith(p + "/"));
             return (
               <li key={to}>
                 <Link to={to} className={cn("flex flex-col items-center gap-1 pt-2.5 pb-1.5 text-[11px] font-semibold transition-colors", active ? "text-coral" : "text-muted-foreground hover:text-foreground")} aria-current={active ? "page" : undefined}>

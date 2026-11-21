@@ -65,6 +65,33 @@ export type Database = {
         }
         Relationships: []
       }
+      budgets: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          limit_paise: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          limit_paise: number
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          limit_paise?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       category_rules: {
         Row: {
           category: string
@@ -480,6 +507,80 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      savings_contributions: {
+        Row: {
+          amount_paise: number
+          contributed_on: string
+          created_at: string
+          goal_id: string
+          id: string
+          kind: string
+          note: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_paise: number
+          contributed_on: string
+          created_at?: string
+          goal_id: string
+          id?: string
+          kind?: string
+          note?: string | null
+          user_id?: string
+        }
+        Update: {
+          amount_paise?: number
+          contributed_on?: string
+          created_at?: string
+          goal_id?: string
+          id?: string
+          kind?: string
+          note?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "savings_contributions_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "savings_goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      savings_goals: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          target_date: string | null
+          target_paise: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          target_date?: string | null
+          target_paise: number
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          target_date?: string | null
+          target_paise?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       source_records: {
         Row: {

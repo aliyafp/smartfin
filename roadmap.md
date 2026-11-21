@@ -4,7 +4,6 @@
 - [x] Monthly comparison: dashboard section, monthly report (any two months), category + merchant comparison, possible recurring payments, 6-month trend, data-backed insights, uncategorised follow-up.
 - [x] Monthly comparison follow-up: confirmed-only totals, same-days comparison for the month in progress, possible-duplicate warning in the report, month-filtered category/uncategorised links, uncategorised shortcut on Home.
 - [x] Tests for parsing, review totals and monthly calculations; signed-in import flow checked on mobile size.
-- [ ] Budgets (Phase 6) — placeholder screen only; nothing to feed comparisons into yet.
 - [ ] Existing users/records from the original project were not moved (needs an export from the old project).
 - [x] Scan & Extract: gallery / camera / multi-image upload, consent, AI reading of the image, document type + payment status, items, GST/total checks, category rules, duplicate warning, review & save, private image storage with deletion.
 - [ ] Scan & Extract follow-ups: HEIC and PDF files aren't accepted yet; a native Android camera wrapper doesn't exist (web camera only).
@@ -13,5 +12,5 @@
 - [ ] Connect Your Apps — Gmail receipts connection (blocked: a workspace admin must add a Gmail client).
 - [ ] Connect Your Apps — Uber / Swiggy / Ola / Account Aggregator (blocked: provider approval or regulated partner).
 - [x] Final pre-deployment audit (report: SMARTFIN_FINAL_PREDEPLOYMENT_REPORT.md) — readiness B, controlled demo.
-- [ ] Budgets, savings goals, savings contributions — not built (audit was no-new-features).
-- [ ] Connect Your Apps screen — engine and tables exist, no screen links to it yet.
+- [x] Budgets, savings goals, savings contributions — built, tested (unit + signed-in browser flow), report §11 added.
+- [ ] Connect Your Apps screen — engine and tables exist, no screen links to it yet (last item keeping the rating at B; waiting on owner's go-ahead).
