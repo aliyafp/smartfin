@@ -14,4 +14,8 @@
 - [x] Final pre-deployment audit (report: SMARTFIN_FINAL_PREDEPLOYMENT_REPORT.md) — readiness B, controlled demo.
 - [x] Budgets, savings goals, savings contributions — built, tested (unit + signed-in browser flow), report §11 added.
 - [ ] Connect Your Apps screen — engine and tables exist, no screen links to it yet (last item keeping the rating at B; owner skipped the decision — left as is).
-- [ ] Deploy to Embarko — plan written (SMARTFIN_EMBARKO_DEPLOYMENT_PLAN.md); waits on owner approval and a replacement AI key + own Google client.
+- [x] Deploy to Embarko — live at https://smartfin.embarko.app (Node build, AI provider switch).
+- [ ] Embarko: owner opens the claim link (keeps the app past 24 h).
+- [ ] Embarko: owner adds GEMINI_API_KEY or OPENAI_API_KEY in Embarko App setup (receipt/PDF reading).
+- [ ] Embarko: owner adds https://smartfin.embarko.app/** to Auth Redirect URLs (Google sign-in, email links).
+- [ ] Scan consent text still names Lovable AI; update once the Embarko AI provider is chosen.

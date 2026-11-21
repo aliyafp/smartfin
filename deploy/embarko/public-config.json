@@ -1,0 +1,6 @@
+{
+  "_note": "Public values only (backend address and publishable key). Never put secret keys here.",
+  "VITE_SUPABASE_URL": "https://c--295c1254-1719-4931-81d6-a9d2e58d809a-prod.lovable.cloud",
+  "VITE_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_7Fkq6fIMmOX_pAKc7Zv49w_W1tbPNjb",
+  "VITE_SUPABASE_PROJECT_ID": "vcixdjumysdqpcackyql"
+}

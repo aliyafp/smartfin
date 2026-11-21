@@ -16,7 +16,8 @@ export const extractDocument = createServerFn({ method: "POST" })
   })
   .handler(async ({ data, context }): Promise<ExtractResult> => {
     const { supabase, userId } = context;
-    const { readDocumentImage, OcrError, OCR_MODEL, OCR_PROVIDER } = await import("./ocr.server");
+    const { readDocumentImage, OcrError, ocrModelInfo } = await import("./ocr.server");
+    const { provider: OCR_PROVIDER, model: OCR_MODEL } = ocrModelInfo();
     const { normaliseExtraction, primaryAmount, scrubExtraction } = await import("./normalise");
     const { interpret } = await import("./interpret");
     const { runChecks } = await import("./validate");

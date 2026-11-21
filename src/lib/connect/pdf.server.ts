@@ -1,11 +1,8 @@
-/** Server-only: sends one statement PDF to Lovable AI and returns its transaction rows. Never logs content. */
-import { createOpenAI } from "@ai-sdk/openai";
+/** Server-only: sends one statement PDF to the configured AI model and returns its transaction rows. Never logs content. */
 import { APICallError, Output, jsonSchema, streamText } from "ai";
-import { createLovableAiGatewayRunIdFetch } from "@/lib/extract/server/run-id";
+import { resolveAiModel } from "@/lib/ai/model.server";
 import type { PdfReading } from "./adapters/statement-pdf";
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1";
-const MODEL = "openai/gpt-6-astra";
 
 export class PdfReadError extends Error {}
 
@@ -50,17 +47,12 @@ function toBase64(bytes: Uint8Array): string {
 }
 
 export async function readStatementPdf(bytes: Uint8Array): Promise<PdfReading> {
-  const apiKey = process.env["LOVABLE_API_KEY"];
-  if (!apiKey) throw new PdfReadError("Statement reading isn't configured for this app.");
-  const provider = createOpenAI({
-    baseURL: GATEWAY_URL, apiKey,
-    headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-    fetch: createLovableAiGatewayRunIdFetch().fetch,
-  });
+  const ai = resolveAiModel();
+  if (!ai) throw new PdfReadError("Statement reading isn't configured for this app.");
   let streamError: unknown = null;
   try {
     const result = streamText({
-      model: provider.responses(MODEL),
+      model: ai.model,
       instructions: INSTRUCTIONS,
       messages: [{ role: "user", content: [
         { type: "text", text: "Read this statement and return its transaction rows." },
@@ -68,7 +60,7 @@ export async function readStatementPdf(bytes: Uint8Array): Promise<PdfReading> {
       ] }],
       output: Output.object({ schema: jsonSchema<PdfReading>(SCHEMA as unknown as Parameters<typeof jsonSchema>[0]), name: "statement_rows" }),
       onError: ({ error }) => { streamError = error; },
-      providerOptions: { openai: { reasoningEffort: "low", store: false } },
+      providerOptions: ai.providerOptions,
     });
     const out = await result.output;
     if (!out || !Array.isArray(out.rows)) throw new PdfReadError("The statement came back empty. Try again.");

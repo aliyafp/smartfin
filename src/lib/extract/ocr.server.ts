@@ -1,13 +1,14 @@
-/** Server-only: sends one document image to Lovable AI and returns the structured reading. */
-import { createOpenAI } from "@ai-sdk/openai";
+/** Server-only: sends one document image to the configured AI model and returns the structured reading. */
 import { APICallError, Output, jsonSchema, streamText } from "ai";
-import { createLovableAiGatewayRunIdFetch } from "./server/run-id";
+import { resolveAiModel } from "@/lib/ai/model.server";
 import { EXTRACTION_INSTRUCTIONS, EXTRACTION_JSON_SCHEMA } from "./ai-schema";
 import type { ExtractErrorCode, RawExtraction } from "./types";
 
-export const OCR_PROVIDER = "Lovable AI Gateway";
-export const OCR_MODEL = "openai/gpt-6-astra";
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1";
+/** Provider and model that will read the next document (recorded on each extraction). */
+export function ocrModelInfo(): { provider: string; model: string } {
+  const m = resolveAiModel();
+  return { provider: m?.provider ?? "not configured", model: m?.modelId ?? "none" };
+}
 
 export class OcrError extends Error {
   constructor(public code: ExtractErrorCode, message: string) { super(message); }
@@ -48,20 +49,13 @@ function mapError(e: unknown): OcrError {
 
 /** Reads the image. Throws OcrError with a user-safe message on failure. Never logs document content. */
 export async function readDocumentImage(bytes: Uint8Array, mimeType: string, signal?: AbortSignal): Promise<RawExtraction> {
-  const apiKey = process.env["LOVABLE_API_KEY"];
-  if (!apiKey) throw new OcrError("service_unavailable", "Image reading isn't configured for this app.");
-  const runIdFetch = createLovableAiGatewayRunIdFetch();
-  const provider = createOpenAI({
-    baseURL: GATEWAY_URL,
-    apiKey,
-    headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-    fetch: runIdFetch.fetch,
-  });
+  const ai = resolveAiModel();
+  if (!ai) throw new OcrError("service_unavailable", "Image reading isn't configured for this app.");
 
   let streamError: unknown = null;
   try {
     const result = streamText({
-      model: provider.responses(OCR_MODEL),
+      model: ai.model,
       instructions: EXTRACTION_INSTRUCTIONS,
       messages: [{
         role: "user",
@@ -73,9 +67,9 @@ export async function readDocumentImage(bytes: Uint8Array, mimeType: string, sig
       output: Output.object({ schema: jsonSchema<RawExtraction>(EXTRACTION_JSON_SCHEMA as unknown as Parameters<typeof jsonSchema>[0]), name: "document_extraction" }),
       ...(signal ? { abortSignal: signal } : {}),
       onError: ({ error }) => { streamError = error; },
-      providerOptions: {
+      providerOptions: ai.kind === "gemini" ? ai.providerOptions : {
         openai: {
-          forceReasoning: true,
+          ...(ai.kind === "gateway" ? { forceReasoning: true } : {}),
           reasoningEffort: "low",
           reasoningSummary: "auto",
           store: false,
