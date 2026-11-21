@@ -12,3 +12,6 @@
 - [ ] Connect Your Apps — implementation plan awaiting approval (connection centre, file-import adapters, shared processing engine, sync history, dashboard source filters).
 - [ ] Connect Your Apps — Gmail receipts connection (blocked: a workspace admin must add a Gmail client).
 - [ ] Connect Your Apps — Uber / Swiggy / Ola / Account Aggregator (blocked: provider approval or regulated partner).
+- [x] Final pre-deployment audit (report: SMARTFIN_FINAL_PREDEPLOYMENT_REPORT.md) — readiness B, controlled demo.
+- [ ] Budgets, savings goals, savings contributions — not built (audit was no-new-features).
+- [ ] Connect Your Apps screen — engine and tables exist, no screen links to it yet.

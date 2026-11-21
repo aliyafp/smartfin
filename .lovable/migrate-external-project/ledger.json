@@ -1,12 +1,72 @@
 [
-  {"capability":"code","source":"smart-receipt-scanner-main_3.zip (TanStack Start + Lovable Cloud)","outcome":"migrate","status":"done","next_action":"-"},
-  {"capability":"schema","source":"drizzle/migrations 0000-0002","outcome":"migrate","status":"done","next_action":"-"},
-  {"capability":"storage","source":"private documents bucket + owner-folder policies","outcome":"migrate","status":"done","next_action":"-"},
-  {"capability":"records","source":"original Lovable Cloud database (no export attached)","outcome":"migrate","status":"pending","next_action":"request CSV exports of app tables"},
-  {"capability":"auth_identities","source":"original Lovable Cloud auth (email + Google)","outcome":"migrate","status":"pending","next_action":"request user export; new sign-up works now"},
-  {"capability":"authorization","source":"owner-only RLS policies","outcome":"migrate","status":"done","next_action":"verify isolation with two users"},
-  {"capability":"google_sign_in","source":"@lovable.dev/cloud-auth-js","outcome":"migrate","status":"done","next_action":"manual check in preview"},
-  {"capability":"ai_extraction","source":"Lovable AI gateway (LOVABLE_API_KEY)","outcome":"preserve","status":"pending","next_action":"confirm key present"},
-  {"capability":"secrets","source":".env (publishable keys only)","outcome":"replace","status":"done","next_action":"-"},
-  {"capability":"verification","source":"pre-deployment audit","outcome":"verify","status":"in_progress","next_action":"run tests, lint, typecheck, build, signed-in flows"}
+ {
+  "capability": "code",
+  "source": "smart-receipt-scanner-main_3.zip (TanStack Start + Lovable Cloud)",
+  "outcome": "migrate",
+  "status": "done",
+  "next_action": "-"
+ },
+ {
+  "capability": "schema",
+  "source": "drizzle/migrations 0000-0002",
+  "outcome": "migrate",
+  "status": "done",
+  "next_action": "-"
+ },
+ {
+  "capability": "storage",
+  "source": "private documents bucket + owner-folder policies",
+  "outcome": "migrate",
+  "status": "done",
+  "next_action": "-"
+ },
+ {
+  "capability": "records",
+  "source": "original Lovable Cloud database (no export attached)",
+  "outcome": "migrate",
+  "status": "pending",
+  "next_action": "request CSV exports of app tables"
+ },
+ {
+  "capability": "auth_identities",
+  "source": "original Lovable Cloud auth (email + Google)",
+  "outcome": "migrate",
+  "status": "pending",
+  "next_action": "request user export; new sign-up works now"
+ },
+ {
+  "capability": "authorization",
+  "source": "owner-only RLS policies",
+  "outcome": "migrate",
+  "status": "verified",
+  "next_action": "-"
+ },
+ {
+  "capability": "google_sign_in",
+  "source": "@lovable.dev/cloud-auth-js",
+  "outcome": "migrate",
+  "status": "done",
+  "next_action": "manual check with a real Google account"
+ },
+ {
+  "capability": "ai_extraction",
+  "source": "Lovable AI gateway (LOVABLE_API_KEY)",
+  "outcome": "preserve",
+  "status": "verified",
+  "next_action": "-"
+ },
+ {
+  "capability": "secrets",
+  "source": ".env (publishable keys only)",
+  "outcome": "replace",
+  "status": "done",
+  "next_action": "-"
+ },
+ {
+  "capability": "verification",
+  "source": "pre-deployment audit",
+  "outcome": "verify",
+  "status": "verified",
+  "next_action": "see SMARTFIN_FINAL_PREDEPLOYMENT_REPORT.md"
+ }
 ]
