@@ -21,6 +21,7 @@ import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedImportRouteImport } from './routes/_authenticated/import'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedSourcesRouteImport } from './routes/_authenticated/sources'
+import { Route as Char126oauthInitiateRouteImport } from './routes/~oauth.initiate'
 import { Route as AuthenticatedGoalsIndexRouteImport } from './routes/_authenticated/goals.index'
 import { Route as AuthenticatedGoalsIdRouteImport } from './routes/_authenticated/goals.$id'
 import { Route as AuthenticatedScanIndexRouteImport } from './routes/_authenticated/scan.index'
@@ -89,6 +90,11 @@ const AuthenticatedSourcesRoute = AuthenticatedSourcesRouteImport.update({
   path: '/sources',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const Char126oauthInitiateRoute = Char126oauthInitiateRouteImport.update({
+  id: '/~oauth/initiate',
+  path: '/~oauth/initiate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedGoalsIndexRoute = AuthenticatedGoalsIndexRouteImport.update({
   id: '/goals/',
   path: '/goals/',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/import': typeof AuthenticatedImportRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/sources': typeof AuthenticatedSourcesRoute
+  '/~oauth/initiate': typeof Char126oauthInitiateRoute
   '/goals/$id': typeof AuthenticatedGoalsIdRoute
   '/scan/$id': typeof AuthenticatedScanIdRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/import': typeof AuthenticatedImportRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/sources': typeof AuthenticatedSourcesRoute
+  '/~oauth/initiate': typeof Char126oauthInitiateRoute
   '/goals/$id': typeof AuthenticatedGoalsIdRoute
   '/scan/$id': typeof AuthenticatedScanIdRoute
   '/transactions/$id': typeof AuthenticatedTransactionsIdRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/_authenticated/import': typeof AuthenticatedImportRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/sources': typeof AuthenticatedSourcesRoute
+  '/~oauth/initiate': typeof Char126oauthInitiateRoute
   '/_authenticated/goals/$id': typeof AuthenticatedGoalsIdRoute
   '/_authenticated/scan/$id': typeof AuthenticatedScanIdRoute
   '/_authenticated/transactions/$id': typeof AuthenticatedTransactionsIdRoute
@@ -204,6 +213,7 @@ export interface FileRouteTypes {
     | '/import'
     | '/profile'
     | '/sources'
+    | '/~oauth/initiate'
     | '/goals/$id'
     | '/scan/$id'
     | '/transactions/$id'
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/import'
     | '/profile'
     | '/sources'
+    | '/~oauth/initiate'
     | '/goals/$id'
     | '/scan/$id'
     | '/transactions/$id'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/_authenticated/import'
     | '/_authenticated/profile'
     | '/_authenticated/sources'
+    | '/~oauth/initiate'
     | '/_authenticated/goals/$id'
     | '/_authenticated/scan/$id'
     | '/_authenticated/transactions/$id'
@@ -259,6 +271,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  Char126oauthInitiateRoute: typeof Char126oauthInitiateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -346,6 +359,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/sources'
       preLoaderRoute: typeof AuthenticatedSourcesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/~oauth/initiate': {
+      id: '/~oauth/initiate'
+      path: '/~oauth/initiate'
+      fullPath: '/~oauth/initiate'
+      preLoaderRoute: typeof Char126oauthInitiateRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/goals/': {
       id: '/_authenticated/goals/'
@@ -443,6 +463,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  Char126oauthInitiateRoute: Char126oauthInitiateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
