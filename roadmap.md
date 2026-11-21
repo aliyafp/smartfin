@@ -13,4 +13,5 @@
 - [ ] Connect Your Apps — Uber / Swiggy / Ola / Account Aggregator (blocked: provider approval or regulated partner).
 - [x] Final pre-deployment audit (report: SMARTFIN_FINAL_PREDEPLOYMENT_REPORT.md) — readiness B, controlled demo.
 - [x] Budgets, savings goals, savings contributions — built, tested (unit + signed-in browser flow), report §11 added.
-- [ ] Connect Your Apps screen — engine and tables exist, no screen links to it yet (last item keeping the rating at B; waiting on owner's go-ahead).
+- [ ] Connect Your Apps screen — engine and tables exist, no screen links to it yet (last item keeping the rating at B; owner skipped the decision — left as is).
+- [ ] Deploy to Embarko — plan written (SMARTFIN_EMBARKO_DEPLOYMENT_PLAN.md); waits on owner approval and a replacement AI key + own Google client.
